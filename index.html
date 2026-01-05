@@ -185,12 +185,11 @@
                 });
 
                 async function loadAttendanceData() {
-                    const selectedDate = dateInput.value; 
+                    const selectedDate = dateInput.value; // This is already "2026-01-05"
                     if (!selectedDate) return;
 
-                    // Format date from YYYY-MM-DD to DD-MM-YY (e.g., 2026-01-01 -> 01-01-26)
-                    const parts = selectedDate.split('-');
-                    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`;
+                    // We no longer need the "parts" and "formattedDate" logic 
+                    // because your DB uses the standard YYYY-MM-DD format.
 
                     // Update the UI label to show the selected date
                     document.getElementById('current-date-label').innerText = selectedDate;
@@ -201,11 +200,11 @@
                         .select('*')
                         .order('name', { ascending: true });
 
-                    // Fetch attendance logs for the specific date
+                    // Fetch attendance logs using the raw selectedDate (YYYY-MM-DD)
                     const { data: attendance, error: aError } = await _supabase
                         .from('teacher_attendance')
                         .select('*')
-                        .eq('date', formattedDate);
+                        .eq('date', selectedDate); // Matches your DB exactly now
 
                     if (tError || aError) {
                         console.error("Data fetch error:", tError || aError);
