@@ -196,15 +196,18 @@
             _supabase
                 .channel('realtime_attendance')
                 .on('postgres_changes', { 
-                    event: '*', // Listen for INSERT, UPDATE, or DELETE
+                    event: '*', 
                     schema: 'public', 
                     table: 'teacher_attendance' 
                 }, (payload) => {
-                    console.log('Realtime change received!', payload);
+                    // FIX: Use local date for the realtime check
+                    const now = new Date();
+                    const year = now.getFullYear();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const localToday = `${year}-${month}-${day}`;
                     
-                    // Only play sound and refresh if it's for the currently selected date
-                    const today = new Date().toISOString().split('T')[0];
-                    if (dateInput.value === today) {
+                    if (dateInput.value === localToday) {
                         playDing();
                         loadAttendanceData();
                     }
@@ -241,8 +244,15 @@
             loginContainer.classList.add('hidden');
             dashboard.classList.remove('hidden');
             
+            // FIX: Get local date instead of UTC ISO string
             const now = new Date();
-            dateInput.value = now.toISOString().split('T')[0];
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            
+            const localToday = `${year}-${month}-${day}`;
+            
+            dateInput.value = localToday; // Sets the input to local today
             updateOnlineStatus();
             loadAttendanceData();
         }
