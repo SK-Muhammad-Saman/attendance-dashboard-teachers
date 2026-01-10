@@ -21,6 +21,10 @@
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
         input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
         .sidebar-link-active { background: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
+        
+        /* Custom scrollbar for sidebar nav */
+        .sidebar-nav::-webkit-scrollbar { width: 4px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen">
@@ -58,9 +62,10 @@
         </div>
     </div>
 
-    <div id="dashboard" class="hidden flex flex-col md:flex-row min-h-screen">
-        <aside class="w-full md:w-72 bg-slate-900 text-white p-6 flex flex-col">
-            <div class="flex flex-col items-center mb-10 pb-6 border-b border-slate-800">
+    <div id="dashboard" class="hidden flex flex-col md:flex-row min-h-screen relative">
+        
+        <aside class="w-full md:w-72 bg-slate-900 text-white p-6 flex flex-col md:h-screen md:sticky md:top-0">
+            <div class="flex flex-col items-center mb-8 pb-6 border-b border-slate-800">
                 <div class="relative">
                     <img src="assets/school_logo.jpg" alt="SEKEMAS" class="w-16 h-16 object-cover rounded-2xl shadow-xl mb-4 border-2 border-slate-700">
                     <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-slate-900 rounded-full"></div>
@@ -71,7 +76,7 @@
                 </div>
             </div>
 
-            <nav class="flex-1 space-y-2">
+            <nav class="flex-1 space-y-2 overflow-y-auto sidebar-nav pr-2">
                 <a href="#" class="flex items-center space-x-3 p-3.5 rounded-xl sidebar-link-active transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                     <span class="font-bold">Utama</span>
@@ -86,15 +91,15 @@
                 </a>
             </nav>
 
-            <div class="pt-6 border-t border-slate-800">
-                <button id="logout-btn" class="flex items-center space-x-3 text-slate-400 hover:text-rose-400 transition font-bold text-sm w-full group p-2">
+            <div class="pt-6 mt-4 border-t border-slate-800">
+                <button id="logout-btn" class="flex items-center space-x-3 text-slate-400 hover:text-rose-400 transition font-bold text-sm w-full group p-3 rounded-xl hover:bg-rose-500/10">
                     <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     <span>Log Keluar</span>
                 </button>
             </div>
         </aside>
 
-        <main class="flex-1 p-4 md:p-10 overflow-y-auto">
+        <main class="flex-1 p-4 md:p-10">
             <header class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
                 <div>
                     <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tight">Kehadiran Guru</h1>
@@ -249,13 +254,10 @@
 
         document.getElementById('logout-btn').addEventListener('click', async () => {
             const { error } = await _supabase.auth.signOut();
-            // Force UI reset immediately
             dashboard.classList.add('hidden');
             loginContainer.classList.remove('hidden');
-            // Clear variables
             allTeachers = [];
             allAttendance = [];
-            // Optional reload to clear cache
             setTimeout(() => { window.location.reload(); }, 500);
         });
 
@@ -297,7 +299,6 @@
         }
 
         function renderTable(data) {
-            // Only show empty state if we actually fetched data and it was empty
             if (data.length === 0) {
                 attendanceList.innerHTML = "";
                 emptyState.classList.remove('hidden');
@@ -372,7 +373,6 @@
             doc.save(`Kehadiran_Guru_${dateInput.value}.pdf`);
         }
 
-        // Initial Start
         checkSession();
     </script>
 </body>
