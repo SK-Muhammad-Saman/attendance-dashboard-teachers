@@ -6,7 +6,7 @@
     <title>HadirSEKEMAS Utama | Portal Guru</title>
     <meta name="description" content="Sistem Kehadiran Guru SK Muhammad Saman. Sila log masuk untuk mengurus rekod kehadiran.">
     <meta name="author" content="HadirSEKEMAS">
-    <meta name="keywords" content="HadirSekemas, SEKEMAS, SK Muhammad Saman, Kehadiran Guru, Smart Attendance">    
+    
     <link rel="icon" type="image/png" href="assets/school_icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -14,77 +14,74 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen font-sans">
     <audio id="scan-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
-    <div id="login-container" class="flex items-center justify-center min-h-screen px-4">
+
+    <div id="login-container" class="flex items-center justify-center min-h-screen px-4 flex-col">
         <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
             <div class="text-center mb-8">
                 <div class="inline-block p-2 rounded-2xl bg-slate-50 mb-4 border border-slate-100 shadow-sm">
-                    <img src="assets/lock.png" 
-                        alt="School Lock" 
-                        class="h-20 w-auto object-contain px-2">
+                    <img src="assets/lock.png" alt="School Lock" class="h-20 w-auto object-contain px-2">
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800">Log Masuk HadirSEKEMAS</h2>
                 <p class="text-gray-500 text-sm">Akses ke Sistem Pengurusan Kehadiran</p>
             </div>
+            
             <form id="login-form" class="space-y-4">
                 <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none transition" required>
                 <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none transition" required>
-                <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">Log In</button>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-100">Log In</button>
             </form>
-        </div>
-            <div class="mt-6 text-center">
-                <a href="https://hadirsekemas.github.io/pelajar/" class="text-sm text-indigo-600 hover:underline">
-                    Klik sini untuk Kehadiran Pelajar
+
+            <div class="mt-8 pt-6 border-t border-gray-50 text-center">
+                <p class="text-xs text-slate-400 mb-2 font-medium uppercase tracking-wider font-bold">Bukan Admin Guru?</p>
+                <a href="https://hadirsekemas.github.io/pelajar/" class="text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center justify-center gap-1 group">
+                    Ke Portal Kehadiran Pelajar
+                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                 </a>
             </div>
+        </div>
     </div>
 
     <div id="dashboard" class="hidden flex flex-col md:flex-row min-h-screen">
-        
         <aside class="w-full md:w-64 bg-slate-900 text-white p-6 flex flex-col">
             <div class="flex flex-col items-center mb-10 pb-6 border-b border-slate-800">
-                <img src="assets/school_logo.jpg" 
-                    alt="SEKEMAS Logo" 
-                    class="w-20 h-20 object-cover rounded-xl shadow-lg mb-4 border border-slate-700">
-                
+                <img src="assets/school_logo.jpg" alt="SEKEMAS Logo" class="w-20 h-20 object-cover rounded-xl shadow-lg mb-4 border border-slate-700">
                 <div class="text-center">
-                    <span class="block text-xs font-semibold tracking-widest text-indigo-400 uppercase">System Admin</span>
-                    <span class="block text-lg font-bold text-white tracking-tight">SEKEMAS</span>
+                    <span class="block text-xs font-semibold tracking-widest text-indigo-400 uppercase">HadirSEKEMAS</span>
+                    <span class="block text-lg font-bold text-white tracking-tight">Portal Guru</span>
                 </div>
             </div>
 
             <nav class="flex-1 space-y-2">
-                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-indigo-600 text-white transition hover:bg-indigo-500">
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-indigo-600 text-white shadow-lg shadow-indigo-900/20">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span>Dashboard</span>
+                    <span class="font-medium">Dashboard Guru</span>
                 </a>
 
-                <a href="https://hadirsekemas.github.io/pelajar/" 
-                target="_blank" 
-                class="flex items-center space-x-3 p-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition group">
-                    <svg class="w-5 h-5 text-slate-500 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                    <span>Student Attendance</span>
+                <a href="https://hadirsekemas.github.io/pelajar/" target="_blank" class="flex items-center space-x-3 p-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition group">
+                    <svg class="w-5 h-5 text-slate-500 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span>Portal Pelajar</span>
                 </a>
             </nav>
 
             <div class="pt-6 border-t border-slate-800">
-                <button id="logout-btn" class="flex items-center space-x-2 text-slate-400 hover:text-rose-400 transition text-sm w-full">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <button id="logout-btn" class="flex items-center space-x-2 text-slate-400 hover:text-rose-400 transition text-sm w-full group">
+                    <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     <span>Sign Out</span>
                 </button>
             </div>
         </aside>
 
-        <main class="flex-1 p-4 md:p-8">
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-slate-800">Teacher Attendance</h1>
-                    <p class="text-slate-500">Monitoring logs for <span id="current-date-label"></span></p>
+                    <h1 class="text-2xl font-bold text-slate-800 font-bold uppercase tracking-tight">Teacher Attendance</h1>
+                    <p class="text-slate-500 italic">Monitoring logs for <span id="current-date-label" class="font-semibold text-indigo-600"></span></p>
                 </div>
                 <div class="flex flex-col items-end gap-1">
                     <div id="connection-status" class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
@@ -149,21 +146,20 @@
                                 <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="attendance-list" class="divide-y divide-gray-50">
-                            </tbody>
+                        <tbody id="attendance-list" class="divide-y divide-gray-50"></tbody>
                     </table>
                 </div>
             </div>
         </main>
     </div>
 
-<script>
+    <script>
         // CONFIGURATION
         const SB_URL = 'https://cawrvnutflgvbrisuqtd.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhd3J2bnV0ZmxndmJyaXN1cXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNDcwODgsImV4cCI6MjA4MTYyMzA4OH0.ZLSVVcZUl2muc584TL_UIYxykjrf_F_dOtDJp53A3cU';
         const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        // State Management
+        // UI State
         const loginContainer = document.getElementById('login-container');
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('login-form');
@@ -173,62 +169,28 @@
         let allTeachers = []; 
         let allAttendance = []; 
 
-        // --- NEW: AUDIO SETUP ---
-        // Using a professional 'ding' sound from a public CDN
-        const scanSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-
-        function playDing() {
-            scanSound.currentTime = 0; // Reset to start if multiple scans happen fast
-            scanSound.play().catch(err => console.log("Audio waiting for user interaction..."));
+        // --- HELPER: GET LOCAL DATE ---
+        function getLocalToday() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
-        // --- 1. CONNECTION & AUTH LOGIC ---
-
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-
-        function updateOnlineStatus() {
-            const dot = document.getElementById('status-dot');
-            const text = document.getElementById('status-text');
-            if (navigator.onLine) {
-                dot.className = "w-3 h-3 bg-green-500 rounded-full animate-pulse";
-                text.innerText = "System Online";
-            } else {
-                dot.className = "w-3 h-3 bg-rose-500 rounded-full";
-                text.innerText = "System Offline";
+        // --- AUDIO: HANDLED BY HIDDEN ELEMENT ---
+        function playDing() {
+            const sound = document.getElementById('scan-sound');
+            if(sound) {
+                sound.currentTime = 0;
+                sound.play().catch(err => console.log("Sound muted. Please interact with the page."));
             }
         }
 
-        // --- NEW: REALTIME SUBSCRIPTION ---
-        function subscribeToChanges() {
-            _supabase
-                .channel('realtime_attendance')
-                .on('postgres_changes', { 
-                    event: '*', 
-                    schema: 'public', 
-                    table: 'teacher_attendance' 
-                }, (payload) => {
-                    // FIX: Use local date for the realtime check
-                    const now = new Date();
-                    const year = now.getFullYear();
-                    const month = String(now.getMonth() + 1).padStart(2, '0');
-                    const day = String(now.getDate()).padStart(2, '0');
-                    const localToday = `${year}-${month}-${day}`;
-                    
-                    if (dateInput.value === localToday) {
-                        playDing();
-                        loadAttendanceData();
-                    }
-                })
-                .subscribe();
-        }
-
+        // --- AUTH & SESSION ---
         async function checkSession() {
             const { data } = await _supabase.auth.getSession();
-            if (data.session) {
-                showDashboard();
-                subscribeToChanges(); // Start listening after login
-            }
+            if (data.session) showDashboard();
         }
 
         loginForm.addEventListener('submit', async (e) => {
@@ -238,8 +200,9 @@
             const { error } = await _supabase.auth.signInWithPassword({ email, password });
             if (error) alert(error.message);
             else {
+                // Play sound once to unlock audio context for the session
+                playDing();
                 showDashboard();
-                subscribeToChanges(); // Start listening after login
             }
         });
 
@@ -248,28 +211,30 @@
             window.location.reload();
         });
 
+        // --- CORE LOGIC ---
+        function subscribeToChanges() {
+            _supabase
+                .channel('realtime_attendance')
+                .on('postgres_changes', { 
+                    event: '*', 
+                    schema: 'public', 
+                    table: 'teacher_attendance' 
+                }, (payload) => {
+                    if (dateInput.value === getLocalToday()) {
+                        playDing();
+                        loadAttendanceData();
+                    }
+                })
+                .subscribe();
+        }
+
         async function showDashboard() {
             loginContainer.classList.add('hidden');
             dashboard.classList.remove('hidden');
-            
-            // FIX: Get local date instead of UTC ISO string
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            
-            const localToday = `${year}-${month}-${day}`;
-            
-            dateInput.value = localToday; // Sets the input to local today
-            updateOnlineStatus();
+            dateInput.value = getLocalToday();
             loadAttendanceData();
+            subscribeToChanges();
         }
-
-        // --- 2. DATA LOADING LOGIC ---
-
-        dateInput.addEventListener('change', () => {
-            loadAttendanceData();
-        });
 
         async function loadAttendanceData() {
             const selectedDate = dateInput.value;
@@ -277,27 +242,17 @@
 
             document.getElementById('current-date-label').innerText = selectedDate;
 
-            const { data: teachers, error: tError } = await _supabase
-                .from('teachers')
-                .select('*')
-                .order('name', { ascending: true });
+            const [{ data: teachers }, { data: attendance }] = await Promise.all([
+                _supabase.from('teachers').select('*').order('name', { ascending: true }),
+                _supabase.from('teacher_attendance').select('*').eq('date', selectedDate)
+            ]);
 
-            const { data: attendance, error: aError } = await _supabase
-                .from('teacher_attendance')
-                .select('*')
-                .eq('date', selectedDate);
+            allTeachers = teachers || [];
+            allAttendance = attendance || [];
 
-            if (tError || aError) {
-                console.error("Data fetch error:", tError || aError);
-                return;
-            }
-
-            allTeachers = teachers;
-            allAttendance = attendance;
-
-            document.getElementById('total-teachers').innerText = teachers.length;
-            document.getElementById('present-today').innerText = attendance.length;
-            document.getElementById('absent-today').innerText = teachers.length - attendance.length;
+            document.getElementById('total-teachers').innerText = allTeachers.length;
+            document.getElementById('present-today').innerText = allAttendance.length;
+            document.getElementById('absent-today').innerText = allTeachers.length - allAttendance.length;
             document.getElementById('last-sync-time').innerText = new Date().toLocaleTimeString();
 
             renderTable(allTeachers);
@@ -306,32 +261,28 @@
         function renderTable(teachersToDisplay) {
             attendanceList.innerHTML = teachersToDisplay.map(teacher => {
                 const log = allAttendance.find(a => String(a['teacher_id']) === String(teacher.id));
-                const clockInTime = log && log['clock_in'] ? log['clock_in'] : '<span class="text-slate-300">--:--:--</span>';
-                const clockOutTime = log && log['clock_out'] ? log['clock_out'] : '<span class="text-slate-300">--:--:--</span>';
+                const clockIn = log?.clock_in || '<span class="text-slate-300">--:--:--</span>';
+                const clockOut = log?.clock_out || '<span class="text-slate-300">--:--:--</span>';
                 
                 return `
-                    <tr class="hover:bg-slate-50 transition group border-b border-gray-50">
+                    <tr class="hover:bg-slate-50 transition border-b border-gray-50">
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-4">
-                                <div class="flex-shrink-0 w-10 h-10">
-                                    <img src="${teacher.photo_url}" 
-                                        class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm"
-                                        onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=random'">
-                                </div>
+                                <img src="${teacher.photo_url}" class="w-10 h-10 rounded-full object-cover border border-gray-200"
+                                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=random'">
                                 <div>
                                     <div class="text-sm font-bold text-slate-800">${teacher.honorific_title} ${teacher.name}</div>
-                                    <div class="text-xs text-slate-500">Teacher</div>
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase">Staff</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2 py-1 rounded">${teacher.barcode}</span>
                         </td>
-                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">${clockInTime}</td>
-                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">${clockOutTime}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">${clockIn}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">${clockOut}</td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${log ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
-                                <span class="w-1.5 h-1.5 mr-1.5 rounded-full ${log ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
                                 ${log ? 'PRESENT' : 'ABSENT'}
                             </span>
                         </td>
@@ -340,53 +291,44 @@
             }).join('');
         }
 
-        // --- 3. EXPORT & SEARCH LOGIC ---
+        // --- FILTERS & EXPORTS ---
+        dateInput.addEventListener('change', loadAttendanceData);
+        
+        document.getElementById('teacher-search').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allTeachers.filter(t => 
+                t.name.toLowerCase().includes(term) || t.barcode.toLowerCase().includes(term)
+            );
+            renderTable(filtered);
+        });
 
         function exportToCSV() {
-            const date = dateInput.value;
-            let csv = 'Teacher Name,Barcode,Clock In,Clock Out,Status\n';
-            allTeachers.forEach(teacher => {
-                const log = allAttendance.find(a => String(a['teacher_id']) === String(teacher.id));
-                const status = log ? 'PRESENT' : 'ABSENT';
-                csv += `"${teacher.honorific_title} ${teacher.name}",${teacher.barcode},${log?.clock_in || ''},${log?.clock_out || ''},${status}\n`;
+            let csv = 'Name,Barcode,In,Out,Status\n';
+            allTeachers.forEach(t => {
+                const log = allAttendance.find(a => String(a['teacher_id']) === String(t.id));
+                csv += `"${t.honorific_title} ${t.name}",${t.barcode},${log?.clock_in || ''},${log?.clock_out || ''},${log ? 'PRESENT' : 'ABSENT'}\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Attendance_Report_${date}.csv`;
+            a.download = `Attendance_${dateInput.value}.csv`;
             a.click();
         }
 
         function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const date = dateInput.value;
-            doc.setFontSize(18);
-            doc.text("SEKEMAS Attendance Report", 14, 20);
+            doc.text("HadirSEKEMAS Attendance Report", 14, 20);
             doc.setFontSize(10);
-            doc.text(`Date: ${date} | Generated: ${new Date().toLocaleString()}`, 14, 28);
-            const tableBody = allTeachers.map(t => {
+            doc.text(`Date: ${dateInput.value}`, 14, 28);
+            const body = allTeachers.map(t => {
                 const log = allAttendance.find(a => String(a['teacher_id']) === String(t.id));
                 return [`${t.honorific_title} ${t.name}`, t.barcode, log?.clock_in || '--', log?.clock_out || '--', log ? 'PRESENT' : 'ABSENT'];
             });
-            doc.autoTable({
-                startY: 35,
-                head: [['Name', 'Barcode', 'In', 'Out', 'Status']],
-                body: tableBody,
-                headStyles: { fillColor: [79, 70, 229] }
-            });
-            doc.save(`Attendance_${date}.pdf`);
+            doc.autoTable({ startY: 35, head: [['Name', 'Barcode', 'In', 'Out', 'Status']], body });
+            doc.save(`Attendance_${dateInput.value}.pdf`);
         }
-
-        document.getElementById('teacher-search').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = allTeachers.filter(t => 
-                t.name.toLowerCase().includes(term) || 
-                t.barcode.toLowerCase().includes(term)
-            );
-            renderTable(filtered);
-        });
 
         checkSession();
     </script>
