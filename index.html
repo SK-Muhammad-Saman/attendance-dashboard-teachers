@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HadirSEKEMAS Utama | Portal Guru</title>
+    <title>HadirSEKEMAS | Portal Guru</title>
     <meta name="description" content="Sistem Kehadiran Guru SK Muhammad Saman. Sila log masuk untuk menyemak rekod kehadiran guru.">
     <meta name="google-site-verification" content="plWCK4xE8ROgP7jx97wRDb7XKGodTIbZ2l8AnXj2oHk" />
     <meta name="author" content="HadirSEKEMAS">
@@ -22,7 +22,6 @@
         input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
         .sidebar-link-active { background: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
         
-        /* Custom scrollbar for sidebar nav */
         .sidebar-nav::-webkit-scrollbar { width: 4px; }
         .sidebar-nav::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
@@ -33,11 +32,11 @@
     <div id="login-container" class="flex items-center justify-center min-h-screen px-4 flex-col bg-slate-50">
         <div class="max-w-md w-full bg-white p-8 rounded-3xl shadow-2xl border border-gray-100">
             <div class="text-center mb-8">
-                <div class="inline-block p-4 rounded-2xl bg-indigo-50 mb-4 border border-indigo-100 shadow-sm">
-                    <img src="assets/lock.png" alt="School Lock" class="h-16 w-auto object-contain">
+                <div class="inline-block p-2 rounded-2xl bg-indigo-50 mb-4 border border-indigo-100 shadow-sm">
+                    <img src="assets\school_logo.png" alt="School Lock" class="h-16 w-auto object-contain">
                 </div>
-                <h2 class="text-2xl font-extrabold text-gray-800">Log Masuk Guru</h2>
-                <p class="text-gray-500 text-sm mt-1">Sistem Pengurusan Kehadiran SEKEMAS</p>
+                <h2 class="text-2xl font-extrabold text-gray-800">HadirSEKEMAS Guru</h2>
+                <p class="text-gray-500 text-sm mt-1">Sistem Pemantauan Kehadiran Guru</p>
             </div>
             
             <form id="login-form" class="space-y-4">
@@ -53,9 +52,9 @@
             </form>
 
             <div class="mt-8 pt-6 border-t border-gray-50 text-center">
-                <p class="text-[10px] text-slate-400 mb-2 font-black uppercase tracking-widest">Bukan Admin Guru?</p>
+                <p class="text-[10px] text-slate-400 mb-2 font-black uppercase tracking-widest">Bukan Admin HadirSEKEMAS Guru?</p>
                 <a href="https://hadirsekemas.github.io/pelajar/" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold flex items-center justify-center gap-1 group">
-                    Ke Portal Kehadiran Pelajar
+                    Ke Portal HadirSEKEMAS Pelajar
                     <svg class="w-4 h-4 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                 </a>
             </div>
@@ -63,7 +62,6 @@
     </div>
 
     <div id="dashboard" class="hidden flex flex-col md:flex-row min-h-screen relative">
-        
         <aside class="w-full md:w-72 bg-slate-900 text-white p-6 flex flex-col md:h-screen md:sticky md:top-0">
             <div class="flex flex-col items-center mb-8 pb-6 border-b border-slate-800">
                 <div class="relative">
@@ -85,7 +83,7 @@
                 <a href="https://hadirsekemas.github.io/pelajar/" target="_blank" class="flex items-center justify-between p-3.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group">
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-slate-500 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <span>Portal Pelajar</span>
+                        <span>HadirSEKEMAS Pelajar</span>
                     </div>
                     <svg class="w-3 h-3 opacity-0 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 </a>
@@ -100,60 +98,60 @@
         </aside>
 
         <main class="flex-1 p-4 md:p-10">
-            <header class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+            <header class="flex flex-col md:flex-row md:items-center justify-between mb-8 md:mb-10 gap-6">
                 <div>
                     <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tight">Kehadiran Guru</h1>
-                    <p class="text-slate-500 mt-1 font-medium text-sm">Rekod log untuk tarikh <span id="current-date-label" class="text-indigo-600 font-bold underline decoration-indigo-200"></span></p>
+                    <p class="text-slate-500 mt-1 font-medium text-sm">Rekod log: <span id="current-date-label" class="text-indigo-600 font-bold underline decoration-indigo-200"></span></p>
                 </div>
-                <div class="flex flex-col items-end gap-2">
-                    <div class="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300">
+                <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-2">
+                    <div class="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-2xl shadow-sm border border-slate-100">
                         <span id="status-dot" class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                        <span id="status-text" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Live Updates</span>
+                        <span id="status-text" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Live</span>
                     </div>
-                    <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Last Sync: <span id="last-sync-time" class="text-slate-500">Tiada</span></span>
+                    <span class="text-[9px] text-slate-400 uppercase font-black tracking-widest hidden md:block">Last Sync: <span id="last-sync-time" class="text-slate-500">Tiada</span></span>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <p class="text-xs text-slate-400 font-black uppercase tracking-widest">Jumlah Guru</p>
-                    <h3 id="total-teachers" class="text-4xl font-black text-slate-800 mt-2">0</h3>
+            <div class="grid grid-cols-3 gap-2 md:gap-6 mb-8">
+                <div class="bg-white p-3 md:p-7 rounded-2xl md:rounded-3xl shadow-sm border border-slate-100">
+                    <p class="text-[8px] md:text-xs text-slate-400 font-black uppercase tracking-widest leading-tight">Jumlah Guru</p>
+                    <h3 id="total-teachers" class="text-xl md:text-4xl font-black text-slate-800 mt-1 md:mt-2">0</h3>
                 </div>
-                <div class="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <p class="text-xs text-green-500/70 font-black uppercase tracking-widest">Hadir Hari Ini</p>
-                    <h3 id="present-today" class="text-4xl font-black text-green-600 mt-2">0</h3>
+                <div class="bg-white p-3 md:p-7 rounded-2xl md:rounded-3xl shadow-sm border border-slate-100">
+                    <p class="text-[8px] md:text-xs text-green-500/70 font-black uppercase tracking-widest leading-tight">Hadir</p>
+                    <h3 id="present-today" class="text-xl md:text-4xl font-black text-green-600 mt-1 md:mt-2">0</h3>
                 </div>
-                <div class="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                    <p class="text-xs text-rose-500/70 font-black uppercase tracking-widest">Tidak Hadir</p>
-                    <h3 id="absent-today" class="text-4xl font-black text-rose-600 mt-2">0</h3>
+                <div class="bg-white p-3 md:p-7 rounded-2xl md:rounded-3xl shadow-sm border border-slate-100">
+                    <p class="text-[8px] md:text-xs text-rose-500/70 font-black uppercase tracking-widest leading-tight">Tidak Hadir/Imbas</p>
+                    <h3 id="absent-today" class="text-xl md:text-4xl font-black text-rose-600 mt-1 md:mt-2">0</h3>
                 </div>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-5 mb-8 items-end">
-                <div class="flex-1 group">
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Carian Kakitangan</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-indigo-500 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </span>
-                        <input type="text" id="teacher-search" class="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-50 outline-none transition shadow-sm font-medium" placeholder="Cari nama atau barcode...">
-                    </div>
-                </div>
-
-                <div class="w-full md:w-56">
+            <div class="space-y-4 mb-8">
+                <div class="w-full">
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Tarikh Semakan</label>
                     <input type="date" id="date-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-50 outline-none transition shadow-sm text-slate-600 font-bold">
                 </div>
 
-                <div class="flex gap-3">
-                    <button onclick="exportToCSV()" class="px-5 py-3.5 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 text-slate-600 transition shadow-sm group flex items-center gap-2 font-bold" title="Eksport CSV">
-                        <svg class="w-5 h-5 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        CSV
-                    </button>
-                    <button onclick="exportToPDF()" class="px-5 py-3.5 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition shadow-lg font-bold flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2-2v4"></path></svg>
-                        PDF
-                    </button>
+                <div class="flex flex-row gap-2 items-end">
+                    <div class="flex-1 group">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 tracking-widest">Carian</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </span>
+                            <input type="text" id="teacher-search" class="w-full pl-9 pr-3 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-50 outline-none transition shadow-sm text-sm font-medium" placeholder="Nama/Barcode">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="exportToCSV()" class="p-3.5 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 text-slate-600 transition shadow-sm font-bold" title="Eksport CSV">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </button>
+                        <button onclick="exportToPDF()" class="p-3.5 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition shadow-lg font-bold">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2-2v4"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -163,9 +161,9 @@
                         <thead class="bg-slate-50/50 border-b border-slate-100">
                             <tr>
                                 <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Guru</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Barcode</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Waktu Masuk</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Waktu Keluar</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest hidden md:table-cell">Barcode</th>
+                                <th class="px-4 md:px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Masuk</th>
+                                <th class="px-4 md:px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Keluar</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Status</th>
                             </tr>
                         </thead>
@@ -253,7 +251,7 @@
         });
 
         document.getElementById('logout-btn').addEventListener('click', async () => {
-            const { error } = await _supabase.auth.signOut();
+            await _supabase.auth.signOut();
             dashboard.classList.add('hidden');
             loginContainer.classList.remove('hidden');
             allTeachers = [];
@@ -315,23 +313,23 @@
                 
                 return `
                     <tr class="${rowClass} transition-colors group">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center space-x-4">
-                                <img src="${t.photo_url}" class="w-11 h-11 rounded-2xl object-cover border-2 border-slate-100 shadow-sm"
+                        <td class="px-4 md:px-8 py-5">
+                            <div class="flex items-center space-x-2 md:space-x-4">
+                                <img src="${t.photo_url}" class="w-8 h-8 md:w-11 md:h-11 rounded-xl md:rounded-2xl object-cover border-2 border-slate-100 shadow-sm"
                                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=random&bold=true'">
                                 <div>
-                                    <div class="text-sm font-extrabold text-slate-800">${t.honorific_title} ${t.name}</div>
-                                    <div class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Kakitangan Akademik</div>
+                                    <div class="text-[11px] md:text-sm font-extrabold text-slate-800 leading-tight">${t.honorific_title} ${t.name}</div>
+                                    <div class="text-[8px] md:text-[9px] text-slate-400 font-black uppercase tracking-widest">Guru</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-8 py-5">
+                        <td class="px-8 py-5 hidden md:table-cell">
                             <span class="text-xs font-mono bg-slate-100 text-slate-500 px-3 py-1 rounded-lg font-bold">${t.barcode}</span>
                         </td>
-                        <td class="px-8 py-5 text-sm text-slate-600 font-bold text-center">${log?.clock_in || '--:--'}</td>
-                        <td class="px-8 py-5 text-sm text-slate-600 font-bold text-center">${log?.clock_out || '--:--'}</td>
-                        <td class="px-8 py-5 text-right">
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl text-[10px] font-black tracking-widest ${statusClass}">
+                        <td class="px-4 md:px-8 py-5 text-[11px] md:text-sm text-slate-600 font-bold text-center">${log?.clock_in || '--:--'}</td>
+                        <td class="px-4 md:px-8 py-5 text-[11px] md:text-sm text-slate-600 font-bold text-center">${log?.clock_out || '--:--'}</td>
+                        <td class="px-4 md:px-8 py-5 text-right">
+                            <span class="inline-flex items-center px-2 md:px-4 py-1.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-black tracking-widest ${statusClass}">
                                 ${log ? 'HADIR' : 'TIADA'}
                             </span>
                         </td>
