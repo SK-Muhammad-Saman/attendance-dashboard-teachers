@@ -18,7 +18,6 @@
         .sidebar-link-active { background: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
         .filter-btn-active { background: #4f46e5 !important; color: white !important; }
         
-        /* Modal Animation for Image Preview */
         #image-modal { transition: opacity 0.3s ease-in-out; }
         #image-modal.hidden { display: none; opacity: 0; }
         #image-modal.flex { display: flex; opacity: 1; }
@@ -174,38 +173,36 @@
         let allAttendance = [];
         let currentFilter = 'ALL';
 
-        // Calculation for working hours
+        // 1. IMPROVED DATE LOGIC (Fixing timezone issue)
+        function getLocalToday() {
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000; 
+            const localISOTime = (new Date(now - offset)).toISOString().split('T')[0];
+            return localISOTime;
+        }
+
         function calculateHours(clockIn, clockOut) {
             if (!clockIn || !clockOut) return { decimal: '--', full: 'Tiada rekod keluar' };
-            const start = new Date(`2026-01-16 ${clockIn}`);
-            const end = new Date(`2026-01-16 ${clockOut}`);
+            const start = new Date(`2000-01-01 ${clockIn}`);
+            const end = new Date(`2000-01-01 ${clockOut}`);
             const diffMs = end - start;
             if (diffMs < 0) return { decimal: '0.0', full: '0 Jam 0 Minit' };
-            
             const totalMinutes = Math.floor(diffMs / (1000 * 60));
             const hours = Math.floor(totalMinutes / 60);
             const minutes = totalMinutes % 60;
-            const decimal = (diffMs / (1000 * 60 * 60)).toFixed(1);
-            
-            return { decimal, full: `${hours} Jam ${minutes} Minit` };
+            return { decimal: (diffMs / (1000 * 60 * 60)).toFixed(1), full: `${hours} Jam ${minutes} Minit` };
         }
 
-        // Feature: Image Modal Controls
         function openImageModal(imgSrc, staffName) {
             const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            const modalName = document.getElementById('modal-name');
-            modalImg.src = imgSrc;
-            modalName.innerText = staffName;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-name').innerText = staffName;
+            modal.classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden'; 
         }
 
         function closeImageModal() {
-            const modal = document.getElementById('image-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('image-modal').classList.replace('flex', 'hidden');
             document.body.style.overflow = 'auto';
         }
 
@@ -227,9 +224,8 @@
         function setRoleFilter(role) {
             currentFilter = role;
             ['ALL', 'GURU', 'AKP'].forEach(r => {
-                const btn = document.getElementById(`filter-${r}`);
-                if(r === role) btn.classList.add('filter-btn-active');
-                else btn.classList.remove('filter-btn-active');
+                document.getElementById(`filter-${r}`).classList.toggle('filter-btn-active', r === role);
+                if(r !== role) document.getElementById(`filter-${r}`).classList.add('text-slate-400');
             });
             renderTable();
         }
@@ -260,16 +256,13 @@
                 const log = allAttendance.find(a => String(a.teacher_id) === String(t.id));
                 const type = (t.staff_type || 'GURU').toUpperCase().trim();
                 const hourData = calculateHours(log?.clock_in, log?.clock_out);
-                
-                const photoUrl = t.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=random`;
                 const fullName = `${t.honorific_title} ${t.name}`;
+                const photoUrl = t.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=random`;
 
                 let lateTag = '';
                 if (type === 'GURU' && log?.clock_in) {
                     const [h, m] = log.clock_in.split(':').map(Number);
-                    if (h > 7 || (h === 7 && m > 30)) {
-                        lateTag = '<span class="ml-2 bg-rose-500 text-white text-[8px] px-1.5 py-0.5 rounded animate-pulse">LEWAT</span>';
-                    }
+                    if (h > 7 || (h === 7 && m > 30)) lateTag = '<span class="ml-2 bg-rose-500 text-white text-[8px] px-1.5 py-0.5 rounded animate-pulse">LEWAT</span>';
                 }
 
                 if (log) presentCount++;
@@ -279,10 +272,7 @@
                         <td class="px-6 py-4 text-xs font-bold text-slate-400">${index + 1}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
-                                <img src="${photoUrl}" 
-                                     onclick="openImageModal('${photoUrl}', '${fullName}')"
-                                     class="w-10 h-10 rounded-xl object-cover border cursor-pointer hover:scale-110 hover:shadow-md transition-all active:scale-95" 
-                                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}'">
+                                <img src="${photoUrl}" onclick="openImageModal('${photoUrl}', '${fullName}')" class="w-10 h-10 rounded-xl object-cover border cursor-pointer hover:scale-110 transition-all">
                                 <div>
                                     <div class="text-sm font-extrabold text-slate-800 flex items-center">${fullName} ${lateTag}</div>
                                     <div class="text-[9px] text-indigo-500 font-black tracking-widest">${type}</div>
@@ -292,55 +282,21 @@
                         <td class="px-6 py-4 hidden md:table-cell text-xs font-mono font-bold text-slate-500">${t.barcode}</td>
                         <td class="px-6 py-4 text-sm font-bold text-center text-slate-600">${log?.clock_in || '--:--'}</td>
                         <td class="px-6 py-4 text-sm font-bold text-center text-slate-600">${log?.clock_out || '--:--'}</td>
-                        <td class="px-6 py-4 text-sm font-black text-center text-indigo-600 cursor-help" title="${hourData.full}">
-                            ${hourData.decimal}
-                        </td>
+                        <td class="px-6 py-4 text-sm font-black text-center text-indigo-600 cursor-help" title="${hourData.full}">${hourData.decimal}</td>
                         <td class="px-6 py-4 text-right">
                             <span class="inline-flex px-3 py-1.5 rounded-lg text-[9px] font-black tracking-widest ${log ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
                                 ${log ? 'HADIR' : 'TIADA'}
                             </span>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             }).join('');
 
             document.getElementById('present-today').innerText = presentCount;
             document.getElementById('absent-today').innerText = filtered.length - presentCount;
         }
 
-        function exportToCSV() {
-            let csv = 'No,Nama,Type,Barcode,Masuk,Keluar,Hours,Status\n';
-            allTeachers.forEach((t, i) => {
-                const log = allAttendance.find(a => String(a.teacher_id) === String(t.id));
-                const hourData = calculateHours(log?.clock_in, log?.clock_out);
-                csv += `${i+1},"${t.name}","${t.staff_type || 'GURU'}","${t.barcode}","${log?.clock_in || ''}","${log?.clock_out || ''}","${hourData.decimal}","${log ? 'HADIR' : 'TIADA'}"\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = `HadirSEKEMAS_${document.getElementById('date-filter').value}.csv`; a.click();
-        }
-
-        function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFontSize(16); doc.text("Laporan Kehadiran Staff", 14, 15);
-            doc.setFontSize(10); doc.text(`Tarikh: ${document.getElementById('date-filter').value}`, 14, 22);
-            const rows = allTeachers.map((t, i) => {
-                const log = allAttendance.find(a => String(a.teacher_id) === String(t.id));
-                const hourData = calculateHours(log?.clock_in, log?.clock_out);
-                return [i+1, t.name, t.staff_type || 'GURU', log?.clock_in || '--', log?.clock_out || '--', hourData.decimal, log ? 'HADIR' : 'TIADA'];
-            });
-            doc.autoTable({
-                startY: 30,
-                head: [['No', 'Nama', 'Type', 'In', 'Out', 'Hours', 'Status']],
-                body: rows,
-                headStyles: { fillColor: [30, 41, 59] }
-            });
-            doc.save(`Laporan_Staff_${document.getElementById('date-filter').value}.pdf`);
-        }
-
-        document.getElementById('date-filter').value = new Date().toISOString().split('T')[0];
+        // Initialize Date and Load Data
+        document.getElementById('date-filter').value = getLocalToday();
         document.getElementById('date-filter').addEventListener('change', loadAttendanceData);
         document.getElementById('teacher-search').addEventListener('input', renderTable);
         
@@ -353,7 +309,11 @@
             if (error) alert("Log Masuk Gagal!"); else location.reload();
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => { _supabase.auth.signOut(); location.reload(); });
+        // 2. FIXED LOGOUT LOGIC (Using async/await)
+        document.getElementById('logout-btn').addEventListener('click', async () => { 
+            await _supabase.auth.signOut(); 
+            window.location.href = window.location.pathname; // Paksa cuci URL dan reload
+        });
 
         _supabase.auth.getSession().then(({data}) => {
             if(data.session) {
@@ -361,8 +321,7 @@
                 document.getElementById('dashboard').classList.remove('hidden');
                 loadAttendanceData();
                 _supabase.channel('staff_updates').on('postgres_changes', { event: '*', schema: 'public', table: 'teacher_attendance' }, () => {
-                    const sound = document.getElementById('scan-sound');
-                    sound.play();
+                    document.getElementById('scan-sound').play();
                     loadAttendanceData();
                 }).subscribe();
             }
